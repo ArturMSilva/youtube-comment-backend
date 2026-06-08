@@ -1,0 +1,18 @@
+{
+  "builds": [
+    {
+      "src": "api/ask.ts",
+      "use": "@vercel/node",
+      "config": {
+        "memory": 256,
+        "maxDuration": 30
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/ask",
+      "dest": "/api/ask.ts"
+    }
+  ]
+}

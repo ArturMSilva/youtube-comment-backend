@@ -1,0 +1,36 @@
+{
+  "name": "youtube-comment-analysis-backend",
+  "version": "1.0.0",
+  "description": "Backend for YouTube Comment Analysis using Groq AI",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/api/ask.js",
+  "scripts": {
+    "dev": "ts-node api/ask.ts",
+    "dev:watch": "nodemon --exec ts-node api/ask.ts",
+    "dev:vercel": "vercel dev",
+    "build": "tsc",
+    "build:vercel": "tsc && npm prune --production",
+    "start": "node dist/api/ask.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "groq-sdk": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vercel/node": "^3.2.0",
+    "nodemon": "^3.0.0",
+    "prettier": "^3.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
