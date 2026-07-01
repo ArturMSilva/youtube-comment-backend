@@ -65,3 +65,17 @@ export async function semanticFilterComments(
     .slice(0, topN)
     .map(s => s.comment)
 }
+
+export type RetrievalMethod = 'keyword' | 'semantic'
+
+export async function selectRelevantComments(
+  method: RetrievalMethod,
+  pergunta: string,
+  comentarios: Comment[],
+  topN: number = 30
+): Promise<Comment[]> {
+  if (method === 'semantic') {
+    return semanticFilterComments(pergunta, comentarios, topN)
+  }
+  return filterRelevantComments(pergunta, comentarios, topN)
+}

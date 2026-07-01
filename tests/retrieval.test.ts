@@ -1,5 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { filterRelevantComments, semanticFilterComments } from '../lib/retrieval'
+import {
+  filterRelevantComments,
+  semanticFilterComments,
+  selectRelevantComments,
+} from '../lib/retrieval'
 import * as embeddings from '../lib/embeddings'
 import type { Comment } from '../types'
 
@@ -93,5 +97,32 @@ describe('semanticFilterComments', () => {
     mockEmbedQuery.mockRejectedValue(new Error('429'))
     mockEmbedDocuments.mockResolvedValue([[1, 0], [0, 1], [0.9, 0.1]])
     await expect(semanticFilterComments('q', comments, 10)).rejects.toThrow('429')
+  })
+})
+
+describe('selectRelevantComments (dispatcher)', () => {
+  beforeEach(() => {
+    mockEmbedQuery.mockReset()
+    mockEmbedDocuments.mockReset()
+  })
+
+  const comments: Comment[] = [
+    { id: '1', text: 'A bateria dura o dia todo', likeCount: 100 },
+    { id: '2', text: 'Tela muito bonita', likeCount: 50 },
+  ]
+
+  it('roteia para keyword sem tocar nos embeddings', async () => {
+    const result = await selectRelevantComments('keyword', 'bateria', comments, 10)
+    expect(result.map(c => c.id)).toContain('1')
+    expect(mockEmbedQuery).not.toHaveBeenCalled()
+    expect(mockEmbedDocuments).not.toHaveBeenCalled()
+  })
+
+  it('roteia para semantic usando os embeddings', async () => {
+    mockEmbedQuery.mockResolvedValue([1, 0])
+    mockEmbedDocuments.mockResolvedValue([[0, 1], [1, 0]])
+    const result = await selectRelevantComments('semantic', 'q', comments, 10)
+    expect(result.map(c => c.id)).toEqual(['2', '1'])
+    expect(mockEmbedQuery).toHaveBeenCalledTimes(1)
   })
 })
