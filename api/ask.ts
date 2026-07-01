@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { filterRelevantComments } from '../lib/retrieval'
+import { selectRelevantComments } from '../lib/retrieval'
 import { askGroq } from '../lib/llm'
 import type { AskRequest } from '../types'
 
@@ -37,7 +37,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const sanitized = body.pergunta.slice(0, 500) // previne prompt injection por tamanho
-  const relevantes = filterRelevantComments(sanitized, body.comentarios, 30)
+  const method = body.method === 'semantic' ? 'semantic' : 'keyword' // default: keyword
+
+  let relevantes
+  try {
+    relevantes = await selectRelevantComments(method, sanitized, body.comentarios, 30)
+  } catch (error) {
+    // Caminho semântico: falha do Gemini vira erro explícito (sem fallback para keyword)
+    return res.status(502).json({ error: 'Falha ao gerar embeddings (busca semântica)' })
+  }
+
   const resultado = await askGroq(sanitized, relevantes)
 
   return res.status(200).json(resultado)
