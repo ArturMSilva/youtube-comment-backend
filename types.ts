@@ -7,6 +7,7 @@ export interface Comment {
 export interface AskRequest {
   pergunta: string
   comentarios: Comment[]
+  method?: 'keyword' | 'semantic'
 }
 
 export interface AskResponse {

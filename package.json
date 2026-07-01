@@ -19,6 +19,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "groq-sdk": "^0.7.0"
   },
   "devDependencies": {
