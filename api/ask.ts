@@ -1,27 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { applyCORS } from '../lib/cors'
 import { selectRelevantComments } from '../lib/retrieval'
 import { askGroq } from '../lib/llm'
 import type { AskRequest } from '../types'
 
-function applyCORS(req: VercelRequest, res: VercelResponse): boolean {
-  const origin = (req.headers['origin'] as string) ?? ''
-
-  // Permite apenas extensões Chrome e localhost
-  if (origin.startsWith('chrome-extension://') || origin === 'http://localhost') {
-    res.setHeader('Access-Control-Allow-Origin', origin)
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-
-  if (req.method === 'OPTIONS') {
-    res.status(204).end()
-    return true // preflight tratado, não continuar
-  }
-  return false
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (applyCORS(req, res)) return
+  if (applyCORS(req, res, 'POST, OPTIONS')) return
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido' })
