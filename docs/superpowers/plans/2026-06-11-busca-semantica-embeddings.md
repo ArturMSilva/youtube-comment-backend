@@ -1,6 +1,6 @@
 # Busca Semântica com Embeddings (Gemini) — Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Adicionar busca semântica por embeddings (Gemini `text-embedding-004`) ao `youtube-comment-backend`, mantendo a busca por keyword lado a lado, selecionável por um campo `method` no request.
 
@@ -34,7 +34,7 @@
 - Modify: `.env.example`
 - Modify: `types.ts:7-10`
 
-- [ ] **Step 1: Instalar a dependência do Gemini**
+- [x] **Step 1: Instalar a dependência do Gemini**
 
 Run (no diretório `youtube-comment-backend`):
 ```bash
@@ -42,7 +42,7 @@ npm install @google/generative-ai
 ```
 Expected: `@google/generative-ai` aparece em `dependencies` do `package.json` e instala sem erro.
 
-- [ ] **Step 2: Documentar a chave no `.env.example`**
+- [x] **Step 2: Documentar a chave no `.env.example`**
 
 Conteúdo final de `.env.example`:
 ```
@@ -50,7 +50,7 @@ GROQ_API_KEY=sua_chave_aqui
 GEMINI_API_KEY=sua_chave_gemini_aqui
 ```
 
-- [ ] **Step 3: Adicionar o campo `method` ao `AskRequest`**
+- [x] **Step 3: Adicionar o campo `method` ao `AskRequest`**
 
 Em `types.ts`, substituir a interface `AskRequest`:
 ```ts
@@ -61,12 +61,12 @@ export interface AskRequest {
 }
 ```
 
-- [ ] **Step 4: Verificar que o projeto ainda compila**
+- [x] **Step 4: Verificar que o projeto ainda compila**
 
 Run: `npm run lint`
 Expected: PASS (sem erros de tipo).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add package.json package-lock.json .env.example types.ts
@@ -83,7 +83,7 @@ Começamos pelas funções puras de `lib/embeddings.ts` — fáceis de testar se
 - Create: `lib/embeddings.ts`
 - Test: `tests/embeddings.test.ts`
 
-- [ ] **Step 1: Escrever os testes que falham**
+- [x] **Step 1: Escrever os testes que falham**
 
 Criar `tests/embeddings.test.ts`:
 ```ts
@@ -124,12 +124,12 @@ describe('chunk', () => {
 })
 ```
 
-- [ ] **Step 2: Rodar os testes e confirmar que falham**
+- [x] **Step 2: Rodar os testes e confirmar que falham**
 
 Run: `npx vitest run tests/embeddings.test.ts`
 Expected: FAIL — `Failed to resolve import '../lib/embeddings'` (arquivo ainda não existe).
 
-- [ ] **Step 3: Implementar as funções puras**
+- [x] **Step 3: Implementar as funções puras**
 
 Criar `lib/embeddings.ts`:
 ```ts
@@ -155,12 +155,12 @@ export function chunk<T>(arr: T[], size: number): T[][] {
 }
 ```
 
-- [ ] **Step 4: Rodar os testes e confirmar que passam**
+- [x] **Step 4: Rodar os testes e confirmar que passam**
 
 Run: `npx vitest run tests/embeddings.test.ts`
 Expected: PASS (6 testes).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/embeddings.ts tests/embeddings.test.ts
@@ -175,7 +175,7 @@ git commit -m "feat: add cosineSimilarity and chunk helpers"
 - Modify: `lib/embeddings.ts`
 - Test: `tests/embeddings.test.ts`
 
-- [ ] **Step 1: Escrever os testes que falham (com mock do SDK)**
+- [x] **Step 1: Escrever os testes que falham (com mock do SDK)**
 
 Adicionar ao TOPO de `tests/embeddings.test.ts` (antes dos imports atuais, pois `vi.mock` precisa ser hoisted) e estender o arquivo. Resultado final do arquivo:
 ```ts
@@ -283,12 +283,12 @@ describe('embedDocuments', () => {
 })
 ```
 
-- [ ] **Step 2: Rodar os testes e confirmar que falham**
+- [x] **Step 2: Rodar os testes e confirmar que falham**
 
 Run: `npx vitest run tests/embeddings.test.ts`
 Expected: FAIL — `embedQuery is not a function` / `embedDocuments is not a function`.
 
-- [ ] **Step 3: Implementar `embedQuery` e `embedDocuments`**
+- [x] **Step 3: Implementar `embedQuery` e `embedDocuments`**
 
 Adicionar ao TOPO de `lib/embeddings.ts` (imports e constantes) e as duas funções ao final:
 ```ts
@@ -330,12 +330,12 @@ export async function embedDocuments(textos: string[]): Promise<number[][]> {
 ```
 (O `import` vai no topo do arquivo, acima de `cosineSimilarity`; as funções abaixo de `chunk`.)
 
-- [ ] **Step 4: Rodar os testes e confirmar que passam**
+- [x] **Step 4: Rodar os testes e confirmar que passam**
 
 Run: `npx vitest run tests/embeddings.test.ts`
 Expected: PASS (12 testes).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/embeddings.ts tests/embeddings.test.ts
@@ -350,7 +350,7 @@ git commit -m "feat: add embedQuery and embedDocuments (Gemini)"
 - Modify: `lib/retrieval.ts`
 - Test: `tests/retrieval.test.ts`
 
-- [ ] **Step 1: Escrever o teste que falha (mockando `lib/embeddings`)**
+- [x] **Step 1: Escrever o teste que falha (mockando `lib/embeddings`)**
 
 Substituir o topo de `tests/retrieval.test.ts` para incluir o mock e o novo import, e adicionar o novo `describe`. O topo do arquivo passa a ser:
 ```ts
@@ -422,12 +422,12 @@ describe('semanticFilterComments', () => {
 })
 ```
 
-- [ ] **Step 2: Rodar e confirmar que falha**
+- [x] **Step 2: Rodar e confirmar que falha**
 
 Run: `npx vitest run tests/retrieval.test.ts`
 Expected: FAIL — `semanticFilterComments is not a function`.
 
-- [ ] **Step 3: Implementar `semanticFilterComments`**
+- [x] **Step 3: Implementar `semanticFilterComments`**
 
 Em `lib/retrieval.ts`, ajustar o import do topo e adicionar a função ao final.
 
@@ -463,12 +463,12 @@ export async function semanticFilterComments(
 }
 ```
 
-- [ ] **Step 4: Rodar e confirmar que passa**
+- [x] **Step 4: Rodar e confirmar que passa**
 
 Run: `npx vitest run tests/retrieval.test.ts`
 Expected: PASS (testes antigos de keyword + 4 novos).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/retrieval.ts tests/retrieval.test.ts
@@ -483,7 +483,7 @@ git commit -m "feat: add semanticFilterComments (cosine over Gemini embeddings)"
 - Modify: `lib/retrieval.ts`
 - Test: `tests/retrieval.test.ts`
 
-- [ ] **Step 1: Escrever o teste que falha**
+- [x] **Step 1: Escrever o teste que falha**
 
 Atualizar o import em `tests/retrieval.test.ts` para incluir o dispatcher:
 ```ts
@@ -524,12 +524,12 @@ describe('selectRelevantComments (dispatcher)', () => {
 })
 ```
 
-- [ ] **Step 2: Rodar e confirmar que falha**
+- [x] **Step 2: Rodar e confirmar que falha**
 
 Run: `npx vitest run tests/retrieval.test.ts`
 Expected: FAIL — `selectRelevantComments is not a function`.
 
-- [ ] **Step 3: Implementar o dispatcher**
+- [x] **Step 3: Implementar o dispatcher**
 
 Em `lib/retrieval.ts`, adicionar ao final:
 ```ts
@@ -548,12 +548,12 @@ export async function selectRelevantComments(
 }
 ```
 
-- [ ] **Step 4: Rodar e confirmar que passa**
+- [x] **Step 4: Rodar e confirmar que passa**
 
 Run: `npx vitest run tests/retrieval.test.ts`
 Expected: PASS (todos os testes de retrieval).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/retrieval.ts tests/retrieval.test.ts
@@ -569,7 +569,7 @@ Lê o `method` (default `keyword`), chama o dispatcher e devolve **502 explícit
 **Files:**
 - Modify: `api/ask.ts:1-4` (imports) e `api/ask.ts:39-43` (corpo do handler)
 
-- [ ] **Step 1: Atualizar o import do retrieval**
+- [x] **Step 1: Atualizar o import do retrieval**
 
 Em `api/ask.ts`, substituir:
 ```ts
@@ -580,7 +580,7 @@ por:
 import { selectRelevantComments } from '../lib/retrieval'
 ```
 
-- [ ] **Step 2: Atualizar o corpo do handler**
+- [x] **Step 2: Atualizar o corpo do handler**
 
 Substituir o trecho (atualmente `api/ask.ts:39-43`):
 ```ts
@@ -608,7 +608,7 @@ por:
   return res.status(200).json(resultado)
 ```
 
-- [ ] **Step 3: Verificar tipos e rodar toda a suíte**
+- [x] **Step 3: Verificar tipos e rodar toda a suíte**
 
 Run: `npm run lint`
 Expected: PASS.
@@ -616,7 +616,7 @@ Expected: PASS.
 Run: `npm test`
 Expected: PASS — toda a suíte (embeddings + retrieval + llm) verde.
 
-- [ ] **Step 4: Smoke test manual do default keyword (sem chave Gemini necessária)**
+- [x] **Step 4: Smoke test manual do default keyword (sem chave Gemini necessária)**
 
 Run: `npm run dev` em um terminal e, em outro:
 ```bash
@@ -628,7 +628,7 @@ Expected: HTTP 200 com `{ resposta, comentarios_fonte }` (caminho keyword, compo
 
 > Nota: o smoke test do caminho `method:"semantic"` exige `GEMINI_API_KEY` válida no `.env` e é opcional aqui — a lógica já está coberta por testes determinísticos com mock.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add api/ask.ts
@@ -639,8 +639,8 @@ git commit -m "feat: wire method dispatcher into /api/ask with explicit 502 on G
 
 ## Verificação final (após todas as tasks)
 
-- [ ] `npm test` → toda a suíte verde.
-- [ ] `npm run lint` → sem erros de tipo.
-- [ ] Conferir que `filterRelevantComments` não mudou de comportamento (testes de keyword originais continuam passando).
-- [ ] Conferir que o caminho semântico **não** tem fallback silencioso (testes de propagação de erro + 502 no handler).
-- [ ] Atualizar a memória `busca-semantica-embeddings-wip` para refletir conclusão da implementação.
+- [x] `npm test` → toda a suíte verde.
+- [x] `npm run lint` → sem erros de tipo.
+- [x] Conferir que `filterRelevantComments` não mudou de comportamento (testes de keyword originais continuam passando).
+- [x] Conferir que o caminho semântico **não** tem fallback silencioso (testes de propagação de erro + 502 no handler).
+- [x] Atualizar a memória `busca-semantica-embeddings-wip` para refletir conclusão da implementação.
