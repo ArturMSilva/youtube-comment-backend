@@ -1,4 +1,5 @@
 import type { Comment } from '../types'
+import { embedQuery, embedDocuments, cosineSimilarity } from './embeddings'
 
 export function filterRelevantComments(
   pergunta: string,
@@ -37,6 +38,29 @@ export function filterRelevantComments(
   }
 
   return withMatches
+    .sort((a, b) => b.score - a.score || b.comment.likeCount - a.comment.likeCount)
+    .slice(0, topN)
+    .map(s => s.comment)
+}
+
+export async function semanticFilterComments(
+  pergunta: string,
+  comentarios: Comment[],
+  topN: number = 30
+): Promise<Comment[]> {
+  if (comentarios.length === 0) return []
+
+  const [queryVec, docVecs] = await Promise.all([
+    embedQuery(pergunta),
+    embedDocuments(comentarios.map(c => c.text)),
+  ])
+
+  const scored = comentarios.map((comment, i) => ({
+    comment,
+    score: cosineSimilarity(queryVec, docVecs[i]),
+  }))
+
+  return scored
     .sort((a, b) => b.score - a.score || b.comment.likeCount - a.comment.likeCount)
     .slice(0, topN)
     .map(s => s.comment)
