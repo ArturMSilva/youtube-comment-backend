@@ -10,13 +10,19 @@ Vercel serverless backend that receives a question plus a list of YouTube commen
 
 ```bash
 npm install
-npm run dev:vercel    # Local dev server at http://localhost:3000/api/ask
+npm run dev:vercel    # Local dev server via `vercel dev` (needs network access)
+node --env-file=.env -r ts-node/register scripts/dev-server.ts  # Local dev server without vercel dev — routes /api/ask and /api/comments
 npm test               # Run all tests once (vitest run)
 npm run test:watch     # Watch mode
 npm run lint            # tsc --noEmit
 ```
 
 Run a single test file: `npx vitest run tests/retrieval.test.ts`
+
+## Endpoints
+
+- `POST /api/ask` — pergunta + comentários → resposta da IA. `method: 'keyword' | 'semantic'` no body escolhe o filtro de relevância (default: `keyword`).
+- `GET /api/comments?videoId=` — busca comentários de um vídeo do YouTube. A `YOUTUBE_API_KEY` fica só aqui, nunca na extensão.
 
 ## Git Commit Conventions
 
@@ -26,5 +32,6 @@ Run a single test file: `npx vitest run tests/retrieval.test.ts`
 
 ## Key Constraints
 
-- CORS in `api/ask.ts` only allows `chrome-extension://` origins and `http://localhost` — do not widen this.
-- `GROQ_API_KEY` (and `GEMINI_API_KEY` once the semantic search feature lands) must stay in `.env` (gitignored) / Vercel env vars, never hardcoded.
+- CORS (`lib/cors.ts`, shared by both endpoints) only allows `chrome-extension://` origins and `http://localhost` — do not widen this.
+- `GROQ_API_KEY`, `GEMINI_API_KEY` (busca semântica) and `YOUTUBE_API_KEY` (`/api/comments`) must stay in `.env` (gitignored) / Vercel env vars, never hardcoded.
+- The semantic search path (`method: 'semantic'`) fails with an explicit `502` if Gemini errors — no silent fallback to keyword.
