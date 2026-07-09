@@ -44,7 +44,7 @@ Os dados que o orientador pediu explicitamente:
 
 ```sql
 CREATE TABLE interacoes (
-  id                          BIGSERIAL     PRIMARY KEY,
+  id                          UUID          PRIMARY KEY,   -- gerado pela aplicação (ver Atomicidade)
   video_id                    TEXT,
   pergunta                    TEXT          NOT NULL,
   resposta                    TEXT          NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE interacoes (
 
 CREATE TABLE interacao_comentarios (
   id            BIGSERIAL  PRIMARY KEY,
-  interacao_id  BIGINT     NOT NULL REFERENCES interacoes(id) ON DELETE CASCADE,
+  interacao_id  UUID       NOT NULL REFERENCES interacoes(id) ON DELETE CASCADE,
   comentario_id TEXT       NOT NULL,
   texto         TEXT       NOT NULL,
   like_count    INTEGER    NOT NULL,
@@ -155,12 +155,17 @@ free tier hiberna após inatividade, portanto falhas esporádicas são esperadas
 aquela linha, não a resposta ao usuário.
 
 **Requisito de atomicidade:** não deve existir linha em `interacoes` sem os seus
-`interacao_comentarios`. O driver HTTP do Neon (`neon()`) trata cada query como uma requisição
-independente e não oferece transação interativa. A implementação deve resolver isso por
-`db.batch()` ou adotando o driver WebSocket (`Pool`), o que for suportado pelo Drizzle na versão
-instalada — a verificar no primeiro passo da implementação. Se nenhum caminho for viável, a
-alternativa é aceitar a escrita não-atômica e limpar interações órfãs por query, o que é aceitável
-dado que a persistência é best-effort.
+`interacao_comentarios`.
+
+Verificado em `drizzle-orm@0.45.2`: `db.transaction()` lança
+`Error("No transactions support in neon-http driver")` (`neon-http/session.js:151`). Já
+`db.batch([...])` (`session.js:117`) delega a `client.transaction(builtQueries)`, enviando todas
+as queries como **uma única transação HTTP atômica**.
+
+`batch()` não permite que uma query use o resultado da anterior. Por isso `interacoes.id` é
+`UUID` gerado pela aplicação (`crypto.randomUUID()`) em vez de `BIGSERIAL`: conhecendo o id antes
+da inserção, as duas queries tornam-se independentes e cabem no mesmo `batch()`. Evita-se assim o
+driver WebSocket (`Pool`) e a dependência `ws`.
 
 ## Testes
 
