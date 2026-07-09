@@ -37,4 +37,21 @@ describe('parseResponse', () => {
     const result = parseResponse(raw, mockComments)
     expect(result.resposta).not.toContain('FONTES')
   })
+
+  it('devolve indicesFonte 0-based coerentes com comentarios_fonte', () => {
+    const raw = 'Boa.\nFONTES: [1, 3]'
+    const result = parseResponse(raw, mockComments)
+    expect(result.indicesFonte).toEqual([0, 2])
+    expect(result.comentarios_fonte.map(c => c.id)).toEqual(['1', '3'])
+  })
+
+  it('devolve indicesFonte vazio quando não há FONTES', () => {
+    const result = parseResponse('A bateria é boa.', mockComments)
+    expect(result.indicesFonte).toEqual([])
+  })
+
+  it('não inclui em indicesFonte índices fora do range', () => {
+    const result = parseResponse('Boa.\nFONTES: [1, 99]', mockComments)
+    expect(result.indicesFonte).toEqual([0])
+  })
 })
