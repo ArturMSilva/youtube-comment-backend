@@ -1,5 +1,5 @@
 import Groq from 'groq-sdk'
-import type { Comment, AskResponse } from '../types'
+import type { Comment, ParsedResponse, GroqResult } from '../types'
 
 const PRIMARY_MODEL = 'llama-3.3-70b-versatile'
 const FALLBACK_MODEL = 'mixtral-8x7b-32768'
@@ -21,23 +21,26 @@ Ao final, indique os números dos comentários que embasaram sua resposta no for
 FONTES: [1, 3, 7]`
 }
 
-export function parseResponse(raw: string, comentarios: Comment[]): AskResponse {
+export function parseResponse(raw: string, comentarios: Comment[]): ParsedResponse {
   const fontesMatch = raw.match(/FONTES:\s*\[([^\]]+)\]/)
   const resposta = raw.replace(/FONTES:.*$/s, '').trim()
 
-  let comentarios_fonte: Comment[] = []
+  let indicesFonte: number[] = []
   if (fontesMatch) {
-    const indices = fontesMatch[1]
+    indicesFonte = fontesMatch[1]
       .split(',')
       .map(s => parseInt(s.trim(), 10) - 1) // 1-based → 0-based
       .filter(i => i >= 0 && i < comentarios.length)
-    comentarios_fonte = indices.map(i => comentarios[i])
   }
 
-  return { resposta, comentarios_fonte }
+  return {
+    resposta,
+    comentarios_fonte: indicesFonte.map(i => comentarios[i]),
+    indicesFonte,
+  }
 }
 
-export async function askGroq(pergunta: string, comentarios: Comment[]): Promise<AskResponse> {
+export async function askGroq(pergunta: string, comentarios: Comment[]): Promise<GroqResult> {
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
   const prompt = buildPrompt(pergunta, comentarios)
 
@@ -52,16 +55,18 @@ export async function askGroq(pergunta: string, comentarios: Comment[]): Promise
   }
 
   let raw: string
+  let modelo = PRIMARY_MODEL
   try {
     raw = await tryModel(PRIMARY_MODEL)
   } catch (error: any) {
     if (error?.status === 429) {
       // Rate limit no modelo primário: tenta o fallback
+      modelo = FALLBACK_MODEL
       raw = await tryModel(FALLBACK_MODEL)
     } else {
       throw error
     }
   }
 
-  return parseResponse(raw, comentarios)
+  return { ...parseResponse(raw, comentarios), modelo }
 }
