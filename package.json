@@ -9,6 +9,7 @@
     "dev": "ts-node api/ask.ts",
     "dev:watch": "nodemon --exec ts-node api/ask.ts",
     "dev:vercel": "vercel dev",
+    "dev:local": "node --env-file=.env -r ts-node/register scripts/dev-server.ts",
     "build": "tsc",
     "build:vercel": "tsc && npm prune --production",
     "start": "node dist/api/ask.js",

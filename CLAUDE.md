@@ -10,8 +10,8 @@ Vercel serverless backend that receives a question plus a list of YouTube commen
 
 ```bash
 npm install
-npm run dev:vercel    # Local dev server via `vercel dev` (needs network access)
-node --env-file=.env -r ts-node/register scripts/dev-server.ts  # Local dev server without vercel dev — routes /api/ask and /api/comments
+npm run dev:local     # Local dev server without vercel dev — routes /api/ask and /api/comments (no Vercel login needed)
+npm run dev:vercel    # Local dev server via `vercel dev` (needs network access + vercel login)
 npm test               # Run all tests once (vitest run)
 npm run test:watch     # Watch mode
 npm run lint            # tsc --noEmit
