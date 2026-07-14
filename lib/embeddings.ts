@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI, TaskType } from '@google/generative-ai'
 
-const EMBEDDING_MODEL = 'text-embedding-004'
+const EMBEDDING_MODEL = 'gemini-embedding-001'
 const BATCH_SIZE = 100
 
 function getModel() {
