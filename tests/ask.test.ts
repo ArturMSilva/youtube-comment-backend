@@ -16,6 +16,8 @@ vi.mock('../lib/persistence', () => ({ salvarInteracao: vi.fn(async () => 'uuid-
 
 import handler from '../api/ask'
 import { salvarInteracao } from '../lib/persistence'
+import { selectRelevantComments } from '../lib/retrieval'
+import { askGroq } from '../lib/llm'
 
 function fakeRes() {
   const res: any = {}
@@ -51,6 +53,14 @@ const bodyValido = {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  ;(selectRelevantComments as any).mockImplementation(async (_m: string, _p: string, c: any) => c)
+  ;(askGroq as any).mockImplementation(async () => ({
+    resposta: 'Dura o dia todo.',
+    comentarios_fonte: [{ id: 'a', text: 'Bateria boa', likeCount: 10 }],
+    indicesFonte: [0],
+    modelo: 'llama-3.3-70b-versatile',
+  }))
+  ;(salvarInteracao as any).mockImplementation(async () => 'uuid-1')
 })
 
 describe('POST /api/ask', () => {
@@ -91,5 +101,53 @@ describe('POST /api/ask', () => {
     expect(res.body.resposta).toBe('Dura o dia todo.')
     expect(erro).toHaveBeenCalled()
     erro.mockRestore()
+  })
+})
+
+describe('POST /api/ask — modo compare', () => {
+  it('grava 2 linhas com o mesmo par_id e metodos distintos', async () => {
+    const res = fakeRes()
+    await handler(fakeReq({ ...bodyValido, compare: true }), res)
+    expect(salvarInteracao).toHaveBeenCalledTimes(2)
+    const d0 = (salvarInteracao as any).mock.calls[0][1]
+    const d1 = (salvarInteracao as any).mock.calls[1][1]
+    expect(d0.parId).toBeTruthy()
+    expect(d0.parId).toBe(d1.parId)
+    expect([d0.metodo, d1.metodo].sort()).toEqual(['keyword', 'semantic'])
+    expect(res.statusCode).toBe(200)
+  })
+
+  it('se o semantic falha, grava so keyword e responde 200 com aviso', async () => {
+    ;(selectRelevantComments as any).mockImplementation(async (m: string, _p: string, c: any) => {
+      if (m === 'semantic') throw new Error('gemini fora')
+      return c
+    })
+    const res = fakeRes()
+    await handler(fakeReq({ ...bodyValido, compare: true }), res)
+    expect(salvarInteracao).toHaveBeenCalledTimes(1)
+    expect((salvarInteracao as any).mock.calls[0][1].metodo).toBe('keyword')
+    expect(res.statusCode).toBe(200)
+    expect(res.body.aviso).toBeTruthy()
+  })
+
+  it('se o keyword falha, grava so semantic e responde 200 sem aviso', async () => {
+    ;(selectRelevantComments as any).mockImplementation(async (m: string, _p: string, c: any) => {
+      if (m === 'keyword') throw new Error('erro keyword')
+      return c
+    })
+    const res = fakeRes()
+    await handler(fakeReq({ ...bodyValido, compare: true }), res)
+    expect(salvarInteracao).toHaveBeenCalledTimes(1)
+    expect((salvarInteracao as any).mock.calls[0][1].metodo).toBe('semantic')
+    expect(res.statusCode).toBe(200)
+    expect(res.body.aviso).toBeUndefined()
+  })
+
+  it('se ambos falham, nao grava nada e responde 502', async () => {
+    ;(selectRelevantComments as any).mockRejectedValue(new Error('tudo fora'))
+    const res = fakeRes()
+    await handler(fakeReq({ ...bodyValido, compare: true }), res)
+    expect(salvarInteracao).not.toHaveBeenCalled()
+    expect(res.statusCode).toBe(502)
   })
 })

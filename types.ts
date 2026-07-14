@@ -8,6 +8,7 @@ export interface AskRequest {
   pergunta: string
   comentarios: Comment[]
   method?: 'keyword' | 'semantic'
+  compare?: boolean
   videoId?: string
 }
 
@@ -15,6 +16,7 @@ export interface AskRequest {
 export interface AskResponse {
   resposta: string
   comentarios_fonte: Comment[]
+  aviso?: string
 }
 
 /** Saída de parseResponse: inclui os índices usados internamente pela persistência. */
