@@ -62,6 +62,16 @@ describe('montarLinhas', () => {
     })
     expect(linhas).toEqual([])
   })
+
+  it('grava par_id quando presente', () => {
+    const { interacao } = montarLinhas('uuid-1', { ...base, parId: 'par-xyz' })
+    expect(interacao.parId).toBe('par-xyz')
+  })
+
+  it('grava par_id nulo quando ausente', () => {
+    const { interacao } = montarLinhas('uuid-1', base)
+    expect(interacao.parId).toBeNull()
+  })
 })
 
 function fakeDb() {

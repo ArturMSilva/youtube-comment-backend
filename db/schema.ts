@@ -17,6 +17,7 @@ export const interacoes = pgTable(
   'interacoes',
   {
     id: uuid('id').primaryKey(),
+    parId: uuid('par_id'),
     videoId: text('video_id'),
     pergunta: text('pergunta').notNull(),
     resposta: text('resposta').notNull(),
@@ -30,6 +31,7 @@ export const interacoes = pgTable(
     idxVideo: index('idx_int_video').on(t.videoId),
     idxMetodo: index('idx_int_metodo').on(t.metodo),
     idxCriadoEm: index('idx_int_criado_em').on(t.criadoEm),
+    idxPar: index('idx_int_par').on(t.parId),
     // O enum do Drizzle só vale em tempo de compilação; a garantia precisa existir no banco.
     metodoValido: check('ck_int_metodo', sql`${t.metodo} IN ('keyword', 'semantic')`),
   })

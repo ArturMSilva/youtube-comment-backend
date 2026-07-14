@@ -5,6 +5,7 @@ import type { Comment } from '../types'
 
 export interface InteracaoParaSalvar {
   videoId: string | null
+  parId?: string | null
   pergunta: string
   resposta: string
   metodo: 'keyword' | 'semantic'
@@ -29,6 +30,7 @@ export function montarLinhas(
   return {
     interacao: {
       id,
+      parId: dados.parId ?? null,
       videoId: dados.videoId,
       pergunta: dados.pergunta,
       resposta: dados.resposta,
