@@ -9,7 +9,7 @@ function buildPrompt(pergunta: string, comentarios: Comment[]): string {
     .map((c, i) => `[${i + 1}] "${c.text}" (${c.likeCount} likes)`)
     .join('\n')
 
-  return `Você é um assistente que analisa comentários de vídeos do YouTube sobre reviews de produtos.
+  return `Você é um assistente que analisa os comentários de um vídeo do YouTube e responde a perguntas do usuário com base neles.
 
 Comentários dos usuários:
 ${lista}
