@@ -5,3 +5,6 @@ dist/
 
 .vercel
 package-lock.json
+
+# Documentação local (não versionada)
+docs/
