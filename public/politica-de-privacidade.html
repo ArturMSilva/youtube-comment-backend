@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade — CommentLens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBFBF9;
+    --ink:#181C18;
+    --muted:#59625A;
+    --faint:#8A928B;
+    --line:#E4E8E3;
+    --green:#16A34A;
+    --green-deep:#14532D;
+    --green-mid:#166534;
+    --tint:#F0F7F1;
+    --tint-line:#CFE7D6;
+    --flag:#FFF4E0;
+    --flag-line:#E9C97A;
+    --maxw:760px;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+  /* Header */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:56px 0 40px;
+  }
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:34px;}
+  .mark{
+    width:38px;height:38px;border-radius:10px;
+    background:var(--green-deep);
+    display:grid;place-items:center;flex:none;
+  }
+  .mark svg{width:21px;height:21px;display:block;}
+  .brand .name{font-weight:700;font-size:19px;letter-spacing:-0.01em;}
+  .brand .sub{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint);margin-top:1px;}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--green);font-weight:600;margin:0 0 14px;
+  }
+  h1{
+    font-size:clamp(30px,5vw,42px);
+    line-height:1.12;letter-spacing:-0.025em;
+    font-weight:700;margin:0 0 18px;
+  }
+  .meta{
+    display:flex;flex-wrap:wrap;gap:8px 26px;
+    font-size:14px;color:var(--muted);
+    font-family:"IBM Plex Mono",monospace;
+  }
+  .meta b{color:var(--ink);font-weight:600;}
+
+  /* Summary (signature block) */
+  .summary{
+    margin:40px 0 8px;
+    border:1px solid var(--tint-line);
+    background:var(--tint);
+    border-radius:14px;
+    padding:26px 28px 28px;
+  }
+  .summary h2{
+    font-size:13px;letter-spacing:0.12em;text-transform:uppercase;
+    font-family:"IBM Plex Mono",monospace;color:var(--green-mid);
+    margin:0 0 20px;font-weight:600;
+  }
+  .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px 30px;}
+  .sitem .lab{
+    display:flex;align-items:center;gap:8px;
+    font-weight:600;font-size:14.5px;margin-bottom:7px;
+  }
+  .sitem .lab .dot{width:15px;height:15px;flex:none;}
+  .sitem p{margin:0;font-size:14.5px;line-height:1.6;color:var(--muted);}
+  .sitem.span{grid-column:1 / -1;}
+
+  /* Body */
+  main{padding:20px 0 8px;}
+  section{padding:34px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  h2.sec{
+    font-size:22px;letter-spacing:-0.015em;font-weight:700;
+    margin:0 0 4px;display:flex;gap:14px;align-items:baseline;
+  }
+  h2.sec .num{
+    font-family:"IBM Plex Mono",monospace;font-size:14px;
+    color:var(--green);font-weight:600;flex:none;padding-top:2px;
+  }
+  section > .body{padding-left:34px;}
+  @media (max-width:560px){
+    section > .body{padding-left:0;}
+    h2.sec{margin-bottom:10px;}
+  }
+  h3{
+    font-size:15px;font-weight:600;margin:22px 0 6px;
+    letter-spacing:-0.01em;
+  }
+  p{margin:0 0 14px;}
+  p:last-child{margin-bottom:0;}
+  a{color:var(--green-mid);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;}
+  a:hover{color:var(--green);}
+  strong{font-weight:600;}
+  ul{margin:6px 0 16px;padding:0;list-style:none;}
+  ul li{position:relative;padding-left:22px;margin-bottom:10px;}
+  ul li::before{
+    content:"";position:absolute;left:2px;top:10px;
+    width:6px;height:6px;border-radius:50%;background:var(--green);
+  }
+  .datatable{
+    margin:16px 0 4px;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  .row{display:grid;grid-template-columns:180px 1fr;border-top:1px solid var(--line);}
+  .row:first-child{border-top:none;}
+  .row .k{
+    padding:13px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;
+    color:var(--green-mid);background:#F6F8F5;font-weight:500;
+    border-right:1px solid var(--line);
+  }
+  .row .v{padding:13px 16px;font-size:14.5px;color:var(--muted);}
+  @media (max-width:560px){
+    .row{grid-template-columns:1fr;}
+    .row .k{border-right:none;border-bottom:1px solid var(--line);}
+  }
+  .flag{
+    background:var(--flag);border:1px solid var(--flag-line);
+    border-radius:10px;padding:14px 16px;margin:18px 0;
+    font-size:14px;line-height:1.6;color:#6b4e12;
+  }
+  .flag b{color:#5a3d00;}
+  .ph{
+    background:#fff;border:1px dashed var(--flag-line);border-radius:5px;
+    padding:1px 7px;font-family:"IBM Plex Mono",monospace;font-size:0.86em;
+    color:#8a6d1f;white-space:nowrap;
+  }
+  footer{
+    padding:34px 0 70px;color:var(--faint);font-size:13px;
+    font-family:"IBM Plex Mono",monospace;line-height:1.7;
+  }
+  footer .disc{
+    color:var(--muted);font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;
+    line-height:1.65;margin-bottom:22px;padding:14px 16px;
+    background:#F5F6F4;border-radius:10px;
+  }
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:3px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+  @media print{
+    body{font-size:12pt;}
+    .summary{break-inside:avoid;}
+    section{break-inside:avoid;}
+    header{padding-top:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 4.5h14a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 19 16.5H9.5L5.5 20v-3.5H5A1.5 1.5 0 0 1 3.5 15V6A1.5 1.5 0 0 1 5 4.5Z" stroke="#22C55E" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="12" cy="10.4" r="2.2" stroke="#22C55E" stroke-width="1.6"/>
+        </svg>
+      </div>
+      <div>
+        <div class="name">CommentLens</div>
+        <div class="sub">análise de comentários do YouTube</div>
+      </div>
+    </div>
+
+    <p class="eyebrow">Documento legal</p>
+    <h1>Política de Privacidade</h1>
+    <div class="meta">
+      <span>Vigente desde: <b>3 de agosto de 2026</b></span>
+      <span>Versão: <b>1.0</b></span>
+    </div>
+
+    <div class="summary" aria-label="Resumo de transparência">
+      <h2>Resumo de transparência</h2>
+      <div class="sgrid">
+        <div class="sitem">
+          <div class="lab">
+            <svg class="dot" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#16A34A" stroke-width="1.5"/><path d="M5 8.2 7 10.2 11 5.8" stroke="#16A34A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            O que tratamos
+          </div>
+          <p>O ID do vídeo aberto, os comentários públicos coletados pela API do YouTube e a pergunta que você digita.</p>
+        </div>
+        <div class="sitem">
+          <div class="lab">
+            <svg class="dot" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#B4483B" stroke-width="1.5"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="#B4483B" stroke-width="1.6" stroke-linecap="round"/></svg>
+            O que não coletamos
+          </div>
+          <p>Nenhuma conta, login ou identificação pessoal sua. Nenhum dado de navegação fora de páginas de vídeo do YouTube.</p>
+        </div>
+        <div class="sitem">
+          <div class="lab">
+            <svg class="dot" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#166534" stroke-width="1.5"/><path d="M8 4.5v7M4.5 8h7" stroke="#166534" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Com quem compartilhamos
+          </div>
+          <p>Provedores necessários ao funcionamento: YouTube Data API e Gemini (Google), Groq, Neon e Vercel.</p>
+        </div>
+        <div class="sitem">
+          <div class="lab">
+            <svg class="dot" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="6.8" width="9" height="6.2" rx="1.4" stroke="#166534" stroke-width="1.5"/><path d="M5.6 6.8V5.4a2.4 2.4 0 0 1 4.8 0v1.4" stroke="#166534" stroke-width="1.5"/></svg>
+            Como protegemos
+          </div>
+          <p>As chaves de acesso ficam apenas no servidor; a extensão nunca as vê. Comentários são sempre exibidos como texto puro.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section>
+      <h2 class="sec"><span class="num">01</span>Sobre esta política</h2>
+      <div class="body">
+        <p>Esta política descreve como a extensão de navegador <strong>CommentLens</strong> trata dados ao ajudar você a compreender as opiniões expressas nos comentários de vídeos do YouTube. A ferramenta coleta os comentários públicos de um vídeo, seleciona os mais relevantes para uma pergunta feita em linguagem natural e usa um modelo de linguagem para gerar uma resposta fundamentada nesses comentários, exibindo as fontes que a embasaram.</p>
+        <p>O CommentLens foi desenvolvido no contexto de um Trabalho de Conclusão de Curso do curso de Tecnologia em Análise e Desenvolvimento de Sistemas do Instituto Federal do Piauí (IFPI), Campus Picos. Ao instalar e usar a extensão, você concorda com as práticas aqui descritas.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">02</span>Dados que tratamos</h2>
+      <div class="body">
+        <p>A extensão trata apenas os dados estritamente necessários para responder às suas perguntas sobre os comentários:</p>
+        <div class="datatable">
+          <div class="row"><div class="k">ID do vídeo</div><div class="v">Ao acessar uma página de vídeo do YouTube, a extensão identifica e extrai o identificador do vídeo. Nenhum outro conteúdo da página é lido.</div></div>
+          <div class="row"><div class="k">Comentários públicos</div><div class="v">Sob seu comando, os comentários públicos do vídeo são coletados pela API oficial do YouTube, ordenados por relevância. Guardamos o texto do comentário, sua contagem de curtidas e sua posição no ranking.</div></div>
+          <div class="row"><div class="k">Sua pergunta</div><div class="v">O texto que você digita em linguagem natural para consultar os comentários.</div></div>
+          <div class="row"><div class="k">Resposta e metadados</div><div class="v">A resposta gerada e dados técnicos da interação: método de recuperação usado, modelo de linguagem que respondeu, latência da seleção e data/hora.</div></div>
+        </div>
+        <h3>O que não é coletado</h3>
+        <ul>
+          <li>Nenhuma conta de usuário, credencial de login ou identificador pessoal seu.</li>
+          <li>Nenhum dado de navegação em páginas que não sejam vídeos do YouTube.</li>
+          <li>Nenhum dado pessoal do autor dos comentários (como nome ou canal) é armazenado.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">03</span>Para que usamos os dados</h2>
+      <div class="body">
+        <p>Os dados são usados exclusivamente para:</p>
+        <ul>
+          <li>Recuperar os comentários mais relevantes para a sua pergunta e gerar uma resposta fundamentada, com as fontes que a embasaram;</li>
+          <li>Registrar as interações de forma pareada, para fins de pesquisa acadêmica — a comparação controlada entre duas estratégias de recuperação (léxica e semântica), que é objeto do trabalho.</li>
+        </ul>
+        <p>Não usamos seus dados para publicidade, criação de perfis comerciais ou qualquer finalidade alheia ao funcionamento e à pesquisa aqui descritos.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">04</span>Onde os dados ficam armazenados</h2>
+      <div class="body">
+        <h3>No seu dispositivo</h3>
+        <p>Os comentários coletados são guardados localmente, no armazenamento do próprio navegador, apenas para restaurar a análise ao reabrir a interface no mesmo vídeo. Esses dados permanecem no seu dispositivo e podem ser apagados a qualquer momento removendo os dados da extensão ou desinstalando-a.</p>
+        <h3>No servidor</h3>
+        <p>As interações (a pergunta, a resposta, o texto dos comentários selecionados e os metadados técnicos) são registradas em um banco de dados relacional (Neon / PostgreSQL) para permitir a comparação entre as estratégias de recuperação. Esse registro é feito em regime de melhor esforço: uma eventual falha na gravação nunca impede que você receba a resposta.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">05</span>Compartilhamento com terceiros</h2>
+      <div class="body">
+        <p>Para funcionar, o CommentLens envia dados a provedores externos que atuam como operadores. Cada um recebe apenas o necessário para sua função e é regido pela sua própria política de privacidade:</p>
+        <div class="datatable">
+          <div class="row"><div class="k">Google — YouTube Data API v3</div><div class="v">Coleta dos comentários públicos do vídeo.</div></div>
+          <div class="row"><div class="k">Google — Gemini (embeddings)</div><div class="v">A pergunta e os comentários são convertidos em representações vetoriais para a recuperação semântica.</div></div>
+          <div class="row"><div class="k">Groq</div><div class="v">A pergunta e os comentários selecionados são enviados ao modelo de linguagem que gera a resposta.</div></div>
+          <div class="row"><div class="k">Neon</div><div class="v">Banco de dados que armazena as interações registradas.</div></div>
+          <div class="row"><div class="k">Vercel</div><div class="v">Hospeda o backend que intermedeia toda a comunicação com os serviços acima.</div></div>
+        </div>
+        <p>Recomendamos consultar as políticas de privacidade desses provedores para entender como tratam os dados que recebem. Não vendemos nem cedemos seus dados a terceiros para fins comerciais.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">06</span>Segurança</h2>
+      <div class="body">
+        <p>Adotamos as seguintes medidas técnicas:</p>
+        <ul>
+          <li>As chaves de acesso aos serviços externos residem exclusivamente no servidor; a extensão nunca tem contato com credenciais.</li>
+          <li>Toda a comunicação entre a extensão e o backend ocorre por conexão criptografada (HTTPS).</li>
+          <li>O conteúdo dos comentários é sempre exibido como texto puro, nunca interpretado como código, evitando a execução de conteúdo indevido.</li>
+        </ul>
+        <p>Nenhum sistema é completamente imune a riscos. Empregamos esforços razoáveis para proteger os dados tratados, mas não é possível garantir segurança absoluta.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">07</span>Retenção e seus direitos</h2>
+      <div class="body">
+        <p>As interações registradas no servidor são mantidas até a conclusão da pesquisa. Como a extensão não coleta identificadores pessoais seus, os registros não estão vinculados à sua identidade.</p>
+        <p>Você pode, a qualquer momento, apagar os dados armazenados localmente removendo os dados da extensão no seu navegador ou desinstalando-a. Para dúvidas ou solicitações relativas a esta política, utilize o contato ao final do documento.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">08</span>Privacidade de menores</h2>
+      <div class="body">
+        <p>O CommentLens não é direcionado a crianças e não coleta intencionalmente dados de menores de idade. A extensão não solicita nem armazena qualquer informação de identificação pessoal do usuário.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">09</span>Alterações nesta política</h2>
+      <div class="body">
+        <p>Esta política pode ser atualizada para refletir mudanças na ferramenta ou nos serviços utilizados. Quando isso ocorrer, a data de vigência no topo será revista. Recomendamos consultar esta página periodicamente.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec"><span class="num">10</span>Contato</h2>
+      <div class="body">
+        <p>Dúvidas sobre esta política ou sobre o tratamento de dados podem ser encaminhadas a:</p>
+        <ul>
+          <li>Responsável: <strong>Artur Martins Silva</strong></li>
+          <li>E-mail: <a href="mailto:arturmartinssilva078@gmail.com">arturmartinssilva078@gmail.com</a></li>
+          <li>Instituição: Instituto Federal do Piauí (IFPI), Campus Picos</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    CommentLens · Política de Privacidade · v1.0
+  </footer>
+
+</div>
+</body>
+</html>

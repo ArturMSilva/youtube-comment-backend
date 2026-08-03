@@ -15,6 +15,10 @@
         "memory": 256,
         "maxDuration": 30
       }
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -25,6 +29,14 @@
     {
       "src": "/api/comments",
       "dest": "/api/comments.ts"
+    },
+    {
+      "src": "/politica/?",
+      "dest": "/public/politica-de-privacidade.html"
+    },
+    {
+      "src": "/politica-de-privacidade.html",
+      "dest": "/public/politica-de-privacidade.html"
     }
   ]
 }
