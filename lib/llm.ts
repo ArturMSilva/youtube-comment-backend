@@ -2,7 +2,7 @@ import Groq from 'groq-sdk'
 import type { Comment, ParsedResponse, GroqResult } from '../types'
 
 const PRIMARY_MODEL = 'llama-3.3-70b-versatile'
-const FALLBACK_MODEL = 'mixtral-8x7b-32768'
+const FALLBACK_MODEL = 'qwen/qwen3-32b'
 
 function buildPrompt(pergunta: string, comentarios: Comment[]): string {
   const lista = comentarios
