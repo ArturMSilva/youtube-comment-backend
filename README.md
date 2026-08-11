@@ -17,7 +17,7 @@ Cada interação é persistida no Neon (Postgres) para servir de **base de pesqu
 |---|---|
 | Runtime | Node.js (≥18) + TypeScript |
 | Deploy | Vercel (Serverless Functions, `@vercel/node`) |
-| LLM | Groq — `llama-3.3-70b-versatile` (fallback: `mixtral-8x7b-32768`) |
+| LLM | Groq — `llama-3.3-70b-versatile` (fallback: `qwen/qwen3-32b`) |
 | Embeddings | Google Gemini — `gemini-embedding-001` |
 | Comentários | YouTube Data API v3 (`/commentThreads`) |
 | Banco | Neon (Postgres serverless) + Drizzle ORM |
@@ -193,7 +193,7 @@ O prompt posiciona o modelo como assistente que analisa comentários, lista os c
 | Modelo | Papel |
 |---|---|
 | `llama-3.3-70b-versatile` | Primário |
-| `mixtral-8x7b-32768` | Fallback automático em HTTP `429` (rate limit) |
+| `qwen/qwen3-32b` | Fallback automático em HTTP `429` (rate limit) |
 
 Parâmetros fixos: `temperature: 0.3`, `max_tokens: 1024`. O modelo que de fato respondeu é devolvido em `modelo` e gravado no banco.
 
