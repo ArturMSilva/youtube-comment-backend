@@ -1,8 +1,8 @@
 import Groq from 'groq-sdk'
 import type { Comment, ParsedResponse, GroqResult } from '../types'
 
-const PRIMARY_MODEL = 'llama-3.3-70b-versatile'
-const FALLBACK_MODEL = 'qwen/qwen3-32b'
+const PRIMARY_MODEL = 'openai/gpt-oss-120b'
+const FALLBACK_MODEL = 'openai/gpt-oss-20b'
 
 function buildPrompt(pergunta: string, comentarios: Comment[]): string {
   const lista = comentarios
