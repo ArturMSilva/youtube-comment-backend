@@ -13,7 +13,7 @@ const base: InteracaoParaSalvar = {
   pergunta: 'Como é a bateria?',
   resposta: 'Dura o dia todo.',
   metodo: 'semantic',
-  modeloLlm: 'llama-3.3-70b-versatile',
+  modeloLlm: 'openai/gpt-oss-120b',
   totalComentariosRecebidos: 500,
   latenciaFiltroMs: 42,
   comentariosFiltrados: comentarios,
@@ -43,7 +43,7 @@ describe('montarLinhas', () => {
       id: 'uuid-1',
       videoId: 'abc123',
       metodo: 'semantic',
-      modeloLlm: 'llama-3.3-70b-versatile',
+      modeloLlm: 'openai/gpt-oss-120b',
       totalComentariosRecebidos: 500,
       latenciaFiltroMs: 42,
     })

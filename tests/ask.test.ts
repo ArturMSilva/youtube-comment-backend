@@ -8,7 +8,7 @@ vi.mock('../lib/llm', () => ({
     resposta: 'Dura o dia todo.',
     comentarios_fonte: [{ id: 'a', text: 'Bateria boa', likeCount: 10 }],
     indicesFonte: [0],
-    modelo: 'llama-3.3-70b-versatile',
+    modelo: 'openai/gpt-oss-120b',
   })),
 }))
 vi.mock('../lib/db', () => ({ getDb: vi.fn(() => ({})) }))
@@ -58,7 +58,7 @@ beforeEach(() => {
     resposta: 'Dura o dia todo.',
     comentarios_fonte: [{ id: 'a', text: 'Bateria boa', likeCount: 10 }],
     indicesFonte: [0],
-    modelo: 'llama-3.3-70b-versatile',
+    modelo: 'openai/gpt-oss-120b',
   }))
   ;(salvarInteracao as any).mockImplementation(async () => 'uuid-1')
 })
@@ -79,11 +79,24 @@ describe('POST /api/ask', () => {
     expect(dados).toMatchObject({
       videoId: 'abc123',
       metodo: 'semantic',
-      modeloLlm: 'llama-3.3-70b-versatile',
+      modeloLlm: 'openai/gpt-oss-120b',
       totalComentariosRecebidos: 1,
       indicesFonte: [0],
     })
     expect(typeof dados.latenciaFiltroMs).toBe('number')
+  })
+
+  it('persiste o modelo secundario quando o askGroq caiu no fallback', async () => {
+    ;(askGroq as any).mockImplementation(async () => ({
+      resposta: 'Dura o dia todo.',
+      comentarios_fonte: [{ id: 'a', text: 'Bateria boa', likeCount: 10 }],
+      indicesFonte: [0],
+      modelo: 'openai/gpt-oss-20b',
+    }))
+    const res = fakeRes()
+    await handler(fakeReq(bodyValido), res)
+    expect(res.statusCode).toBe(200)
+    expect((salvarInteracao as any).mock.calls[0][1].modeloLlm).toBe('openai/gpt-oss-20b')
   })
 
   it('grava videoId nulo quando o body nao traz videoId', async () => {
